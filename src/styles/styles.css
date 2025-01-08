@@ -1,0 +1,14 @@
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+.card {
+    margin: 0.5rem;
+}
+
+.overflow-auto {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
