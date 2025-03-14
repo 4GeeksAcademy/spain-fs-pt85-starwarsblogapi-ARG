@@ -1,38 +1,97 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-    const { state, actions } = useContext(Context);
+    const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
 
     return (
-        <nav className="navbar navbar-dark bg-dark">
-            <div className="container">
-                <a className="navbar-brand" href="/">Star Wars Blog</a>
-                <div className="dropdown">
-                    <button 
-                        className="btn btn-primary dropdown-toggle" 
-                        type="button" 
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Favorites ({state.favorites.length})
-                    </button>
-                    <ul className="dropdown-menu">
-                        {state.favorites.length === 0 
-                            ? <li className="dropdown-item">No favorites added</li>
-                            : state.favorites.map((fav, index) => (
-                                <li key={index} className="dropdown-item d-flex justify-content-between">
-                                    {fav.name}
-                                    <button onClick={() => actions.removeFavorite(fav)} className="btn btn-danger btn-sm">
-                                        <i className="fa fa-trash"></i>
-                                    </button>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                </div>
+        <nav className="navbar navbar-dark bg-dark px-3">
+            <Link to="/" className="navbar-brand">Star Wars Blog</Link>
+            <Link to="/favorites" className="text-light text-center pt-2 text-decoration-none"><h4>Favorites</h4></Link>
+            <div className="dropdown">
+                <button className="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">
+                    Favorites ({store.favorites.length})
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end">
+                    {store.favorites.length > 0 ? (
+                        store.favorites.map((item, index) => (
+                            <li key={index} className="dropdown-item d-flex justify-content-between">
+                                {/* 🔗 Click para ir a detalles */}
+                                <button
+                                    className="btn btn-link text-dark text-decoration-none p-0"
+                                    onClick={() => navigate(`/details/${item.type}/${item.uid}`)}
+                                >
+                                    {item.name}
+                                </button>
+                                
+                                {/* ❌ Botón para eliminar favorito */}
+                                <button 
+                                    className="btn btn-sm btn-danger ms-2" 
+                                    onClick={() => actions.toggleFavorite(item, item.type)}
+                                >
+                                    ❌
+                                </button>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="dropdown-item">No favorites</li>
+                    )}
+                </ul>
             </div>
         </nav>
     );
 };
 
 export default Navbar;
+
+// import React, { useContext } from "react";
+// import { Context } from "../store/appContext";
+// import { Link } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+
+
+// const Navbar = () => {
+//     const navigate = useNavigate();
+//     const { store, actions } = useContext(Context);
+
+//     return (
+//         <nav className="navbar navbar-dark bg-dark px-3">
+//             <Link to="/" className="navbar-brand">Star Wars Blog</Link>
+//             <div className="dropdown">
+//                 <button className="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown">
+//                     Favorites ({store.favorites.length})
+//                 </button>
+//                 <ul className="dropdown-menu dropdown-menu-end">
+//                 {store.favorites.length > 0 ? (
+//                         store.favorites.map((item, index) => (
+//                             <li key={index} className="dropdown-item d-flex justify-content-between">
+//                                 {/* 🔗 Click para ir a detalles */}
+//                                 <button
+//                                     className="btn btn-link text-dark text-decoration-none p-0"
+//                                     onClick={() => navigate(`/details/${item.type}/${item.uid}`)}
+//                                 >
+//                                     {item.name}
+//                                 </button>
+                                
+//                                 {/* ❌ Botón para eliminar favorito */}
+//                                 <button 
+//                                     className="btn btn-sm btn-danger ms-2" 
+//                                     onClick={() => actions.toggleFavorite(item)}
+//                                 >
+//                                     ❌
+//                                 </button>
+//                             </li>
+//                         ))
+//                     ) : (
+//                         <li className="dropdown-item">No favorites</li>
+//                     )}
+//                 </ul>
+//             </div>
+//         </nav>
+//     );
+// };
+
+// export default Navbar;
+
